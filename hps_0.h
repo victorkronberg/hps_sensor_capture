@@ -78,15 +78,87 @@
 #define PIO_OUTPUT_RESET_VALUE 131071
 
 /*
+ * Macros for device 'pio_hex_z', class 'altera_avalon_pio'
+ * The macros are prefixed with 'PIO_HEX_Z_'.
+ * The prefix is the slave descriptor.
+ */
+#define PIO_HEX_Z_COMPONENT_TYPE altera_avalon_pio
+#define PIO_HEX_Z_COMPONENT_NAME pio_hex_z
+#define PIO_HEX_Z_BASE 0x20
+#define PIO_HEX_Z_SPAN 16
+#define PIO_HEX_Z_END 0x2f
+#define PIO_HEX_Z_BIT_CLEARING_EDGE_REGISTER 0
+#define PIO_HEX_Z_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define PIO_HEX_Z_CAPTURE 0
+#define PIO_HEX_Z_DATA_WIDTH 8
+#define PIO_HEX_Z_DO_TEST_BENCH_WIRING 0
+#define PIO_HEX_Z_DRIVEN_SIM_VALUE 0
+#define PIO_HEX_Z_EDGE_TYPE NONE
+#define PIO_HEX_Z_FREQ 50000000
+#define PIO_HEX_Z_HAS_IN 0
+#define PIO_HEX_Z_HAS_OUT 1
+#define PIO_HEX_Z_HAS_TRI 0
+#define PIO_HEX_Z_IRQ_TYPE NONE
+#define PIO_HEX_Z_RESET_VALUE 127
+
+/*
+ * Macros for device 'pio_hex_y', class 'altera_avalon_pio'
+ * The macros are prefixed with 'PIO_HEX_Y_'.
+ * The prefix is the slave descriptor.
+ */
+#define PIO_HEX_Y_COMPONENT_TYPE altera_avalon_pio
+#define PIO_HEX_Y_COMPONENT_NAME pio_hex_y
+#define PIO_HEX_Y_BASE 0x30
+#define PIO_HEX_Y_SPAN 16
+#define PIO_HEX_Y_END 0x3f
+#define PIO_HEX_Y_BIT_CLEARING_EDGE_REGISTER 0
+#define PIO_HEX_Y_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define PIO_HEX_Y_CAPTURE 0
+#define PIO_HEX_Y_DATA_WIDTH 8
+#define PIO_HEX_Y_DO_TEST_BENCH_WIRING 0
+#define PIO_HEX_Y_DRIVEN_SIM_VALUE 0
+#define PIO_HEX_Y_EDGE_TYPE NONE
+#define PIO_HEX_Y_FREQ 50000000
+#define PIO_HEX_Y_HAS_IN 0
+#define PIO_HEX_Y_HAS_OUT 1
+#define PIO_HEX_Y_HAS_TRI 0
+#define PIO_HEX_Y_IRQ_TYPE NONE
+#define PIO_HEX_Y_RESET_VALUE 127
+
+/*
+ * Macros for device 'pio_hex_x', class 'altera_avalon_pio'
+ * The macros are prefixed with 'PIO_HEX_X_'.
+ * The prefix is the slave descriptor.
+ */
+#define PIO_HEX_X_COMPONENT_TYPE altera_avalon_pio
+#define PIO_HEX_X_COMPONENT_NAME pio_hex_x
+#define PIO_HEX_X_BASE 0x40
+#define PIO_HEX_X_SPAN 16
+#define PIO_HEX_X_END 0x4f
+#define PIO_HEX_X_BIT_CLEARING_EDGE_REGISTER 0
+#define PIO_HEX_X_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define PIO_HEX_X_CAPTURE 0
+#define PIO_HEX_X_DATA_WIDTH 8
+#define PIO_HEX_X_DO_TEST_BENCH_WIRING 0
+#define PIO_HEX_X_DRIVEN_SIM_VALUE 0
+#define PIO_HEX_X_EDGE_TYPE NONE
+#define PIO_HEX_X_FREQ 50000000
+#define PIO_HEX_X_HAS_IN 0
+#define PIO_HEX_X_HAS_OUT 1
+#define PIO_HEX_X_HAS_TRI 0
+#define PIO_HEX_X_IRQ_TYPE NONE
+#define PIO_HEX_X_RESET_VALUE 127
+
+/*
  * Macros for device 'pio_input', class 'altera_avalon_pio'
  * The macros are prefixed with 'PIO_INPUT_'.
  * The prefix is the slave descriptor.
  */
 #define PIO_INPUT_COMPONENT_TYPE altera_avalon_pio
 #define PIO_INPUT_COMPONENT_NAME pio_input
-#define PIO_INPUT_BASE 0x20
+#define PIO_INPUT_BASE 0x50
 #define PIO_INPUT_SPAN 16
-#define PIO_INPUT_END 0x2f
+#define PIO_INPUT_END 0x5f
 #define PIO_INPUT_BIT_CLEARING_EDGE_REGISTER 1
 #define PIO_INPUT_BIT_MODIFYING_OUTPUT_REGISTER 0
 #define PIO_INPUT_CAPTURE 1
@@ -112,7 +184,7 @@
 #define SYSID_QSYS_SPAN 8
 #define SYSID_QSYS_END 0x10007
 #define SYSID_QSYS_ID 2899645186
-#define SYSID_QSYS_TIMESTAMP 1619289768
+#define SYSID_QSYS_TIMESTAMP 1619298306
 
 /*
  * Macros for device 'jtag_uart', class 'altera_avalon_jtag_uart'

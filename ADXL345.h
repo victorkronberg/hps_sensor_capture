@@ -23,7 +23,7 @@
 
 /* Bit values in DATA_FORMAT                                            */
 
-/* Register values read in DATAX0 through DATAZ1 are dependant on the 
+/* Register values read in DATAX0 through DATAZ1 are dependant on the
    value specified in data format.  Customer code will need to interpret
    the data as desired.                                                 */
 #define XL345_RANGE_2G             0x00
@@ -80,7 +80,7 @@
 #define ADXL345_REG_DATAZ0      0x36  // read only
 #define ADXL345_REG_DATAZ1      0x37  // read only
 
-     
+
 bool ADXL345_Init(int file);
 bool ADXL345_IsDataReady(int file);
 bool ADXL345_XYZ_Read(int file, uint16_t szData16[3]);

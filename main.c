@@ -20,7 +20,54 @@
 #define HW_REGS_SPAN ( 0x04000000 )
 #define HW_REGS_MASK ( HW_REGS_SPAN - 1 )
 
+// api for register access, defined in main.c
+bool ADXL345_REG_WRITE(int file, uint8_t address, uint8_t value){
+	bool bSuccess = false;
+	uint8_t szValue[2];
 
+	// write to define register
+	szValue[0] = address;
+	szValue[1] = value;
+	if (write(file, &szValue, sizeof(szValue)) == sizeof(szValue)){
+			bSuccess = true;
+	}
+
+
+	return bSuccess;
+}
+
+bool ADXL345_REG_READ(int file, uint8_t address,uint8_t *value){
+	bool bSuccess = false;
+	uint8_t Value;
+
+	// write to define register
+	if (write(file, &address, sizeof(address)) == sizeof(address)){
+
+		// read back value
+		if (read(file, &Value, sizeof(Value)) == sizeof(Value)){
+			*value = Value;
+			bSuccess = true;
+		}
+	}
+
+
+	return bSuccess;
+}
+
+bool ADXL345_REG_MULTI_READ(int file, uint8_t readaddr,uint8_t readdata[], uint8_t len){
+	bool bSuccess = false;
+
+	// write to define register
+	if (write(file, &readaddr, sizeof(readaddr)) == sizeof(readaddr)){
+		// read back value
+		if (read(file, readdata, len) == len){
+			bSuccess = true;
+		}
+	}
+
+
+	return bSuccess;
+}
 
 int main(int argc, char *argv[]) {
 
@@ -40,6 +87,7 @@ int main(int argc, char *argv[]) {
 	int sw_mask;
 	void *h2p_lw_led_addr;
 	void *h2p_lw_sw_addr;
+	void *h2p_lw_hexL_addr;
 
 /////////////////////////////////////////gsensor init and configuration//////////////////////////////////
 	printf("===== gsensor test =====\r\n");
@@ -85,6 +133,7 @@ int main(int argc, char *argv[]) {
 
 	h2p_lw_led_addr=virtual_base + ( ( unsigned long  )( ALT_LWFPGASLVS_OFST + PIO_OUTPUT_BASE ) & ( unsigned long)( HW_REGS_MASK ) );
 	h2p_lw_sw_addr=virtual_base + ( ( unsigned long  )( ALT_LWFPGASLVS_OFST + PIO_INPUT_BASE ) & ( unsigned long)( HW_REGS_MASK ) );
+	h2p_lw_hexL_addr=virtual_base + ( ( unsigned long  )( ALT_LWFPGASLVS_OFST + PIO_HEX_X_BASE ) & ( unsigned long)( HW_REGS_MASK ) );
 
 
 	// toggle the LEDs a bit
@@ -94,6 +143,7 @@ int main(int argc, char *argv[]) {
 
 		// control led
 		*(uint32_t *)h2p_lw_led_addr = sw_mask;
+		*(uint32_t *)h2p_lw_hexL_addr = sw_mask;
 		sw_mask = *(uint32_t *)h2p_lw_sw_addr;
 
 		// wait 250ms
