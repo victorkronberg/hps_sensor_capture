@@ -20,7 +20,7 @@ ARCH= arm
  
 build: $(TARGET)
  
-$(TARGET): main.o
+$(TARGET): main.o ADXL345.o
 	$(CC) $(LDFLAGS) $^ -o $@
  
 %.o : %.c
