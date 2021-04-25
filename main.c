@@ -15,6 +15,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "ADXL345.h"
+#include "logging.h"
 
 #define HW_REGS_BASE ( ALT_STM_OFST )
 #define HW_REGS_SPAN ( 0x04000000 )
@@ -81,6 +82,8 @@ int main(int argc, char *argv[]) {
 	int cnt=0, max_cnt=0;
 
 	// LED variables
+	double start_time;
+	double end_time;
 	void *virtual_base;
 	int fd;
 	int loop_count;
@@ -171,7 +174,10 @@ int main(int argc, char *argv[]) {
                 printf("[%d]X=%d mg, Y=%d mg, Z=%d mg\r\n", cnt,(int16_t)szXYZ[0]*mg_per_digi, (int16_t)szXYZ[1]*mg_per_digi, (int16_t)szXYZ[2]*mg_per_digi);
                 // show raw data,
                 //printf("X=%04x, Y=%04x, Z=%04x\r\n", (alt_u16)szXYZ[0], (alt_u16)szXYZ[1],(alt_u16)szXYZ[2]);
+				start_time = getTimeMsec();
                 usleep(1000*1000);
+				end_time = getTimeMsec();
+				printf("Time delay: %f",(end_time - start_time) );
             }
         }
     }
