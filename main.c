@@ -35,6 +35,8 @@
 #define CPU_FILTERING 1
 
 #define LOOP_COUNT	60
+#define RAW_DATA        0
+#define FILTERED_DATA   1
 
 #define FPGA_START_TIME	0
 #define FPGA_REQ_TIME	1
@@ -61,11 +63,22 @@ void *CPU_filter(void *threadp);
 //	[4] - Data read (end time)
 double fpga_timestamps[6][75];
 
+// FPGA filter results
+// [0] - Raw data
+// [1] - Filtered data
+uint32_t fpga_results[2][75];
+
+
 // CPU Timestamps
 // [0] - Start time
 // [1] - I2C read
 // [2] - Filter done
 double cpu_timestamps[3][75];
+
+// CPU filter results
+// [0] - Raw data
+// [1] - Filtered data
+uint32_t cpu_results[2][75];
 
 typedef struct
 {
@@ -179,6 +192,8 @@ void *CPU_filter(void *threadp)
 				bSuccess = ADXL345_XYZ_Read(file, szXYZ);
 				if (bSuccess){
 					  cnt++;
+
+                    fpga_results[RAW_DATA][loop_count] = (uint32_t)((szXYZ[0]*mg_per_digi));
 					// control led
 					fpga_timestamps[FPGA_START_TIME][loop_count] = getTimeMsec();
 					sw_mask = (uint32_t)((szXYZ[0]*mg_per_digi) | FPGA_REQ_MASK);
@@ -202,6 +217,7 @@ void *CPU_filter(void *threadp)
 					//printf("Final response convert: %d\n", sw_value);
 					printf("Filter time elapsed: %f\r\n",(fpga_timestamps[FPGA_END_TIME][loop_count]-fpga_timestamps[FPGA_ACK_TIME][loop_count]) );
 					printf("Filter response X=%d mg\n",sw_value);
+                    fpga_results[FILTERED_DATA][loop_count] = sw_value;
 
 					// wait 250ms
 					usleep( 250*1000 );
@@ -221,6 +237,7 @@ void *CPU_filter(void *threadp)
 	            bSuccess = ADXL345_XYZ_Read(file, szXYZ);
 	            if (bSuccess){
 		              cnt++;
+                    cpu_results[RAW_DATA][loop_count] = (uint32_t)((szXYZ[0]*mg_per_digi));
 	                //printf("[%d]X=%d mg, Y=%d mg, Z=%d mg\r\n", cnt,(int16_t)szXYZ[0]*mg_per_digi, (int16_t)szXYZ[1]*mg_per_digi, (int16_t)szXYZ[2]*mg_per_digi);
 	                // show raw data,
 	                //printf("X=%04x, Y=%04x, Z=%04x\r\n", (alt_u16)szXYZ[0], (alt_u16)szXYZ[1],(alt_u16)szXYZ[2]);
@@ -239,6 +256,7 @@ void *CPU_filter(void *threadp)
 
 					printf("Filter time elapsed: %f\r\n",(cpu_timestamps[CPU_END_TIME][loop_count] - cpu_timestamps[CPU_START_TIME][loop_count]) );
 					printf("Filter results: [%d]X=%d mg, Y=%d mg, Z=%d mg\n", szXYZ_filter[ENTRIES][X_IDX],szXYZ_filter[AVG][X_IDX],szXYZ_filter[AVG][Y_IDX],szXYZ_filter[AVG][Z_IDX]);
+                    fpga_results[FILTERED_DATA][loop_count] = szXYZ_filter[ENTRIES][X_IDX];
 					loop_count++;
 	            }
 	        }
@@ -384,6 +402,20 @@ int main(int argc, char *argv[]) {
 		syslog(LOG_CRIT,"CPU_timing,%f,%f,%f,msec\n",
 			total_time,cpu_timestamps[CPU_I2C_READ][i]-cpu_timestamps[CPU_START_TIME][i],
 			cpu_timestamps[CPU_END_TIME][i]-cpu_timestamps[CPU_I2C_READ][i]);
+	}
+
+    syslog(LOG_CRIT,"FPGA_results,Raw_Data,Filtered_Data,Units\n");
+    for(i = 0; i < LOOP_COUNT; i++)
+	{
+		syslog(LOG_CRIT,"FPGA_results,%d,%d,mg\n",
+			fpga_results[RAW_DATA][i],fpga_results[FILTERED_DATA][i]);
+	}
+
+	syslog(LOG_CRIT,"CPU_results,Raw_Data,Filtered_Data,Units\n");
+    for(i = 0; i < LOOP_COUNT; i++)
+	{
+		syslog(LOG_CRIT,"CPU_Results,%d,%d,mg\n",
+			cpu_results[RAW_DATA][i],cpu_results[FILTERED_DATA][i]);
 	}
 
  	return 0;

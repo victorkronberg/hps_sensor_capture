@@ -2,7 +2,7 @@
 
 uint16_t averaging_filter(int16_t filter_data[4][3], int16_t szHistoricalData[NUM_FILTERED][3], int16_t szData16[3])
 {
-    uint16_t i,j;
+    uint32_t i,j;
     for(i=0; i<3; i++)
     {
         // Check if filter is full
@@ -32,7 +32,7 @@ uint16_t averaging_filter(int16_t filter_data[4][3], int16_t szHistoricalData[NU
     // Exercise the processor
     for(i=0; i<128; i++)
     {
-        j = (filter_data[AVG][2] * i)/5;
+        j += (filter_data[AVG][2] * i)/5;
     }
 
     return j;
