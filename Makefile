@@ -12,10 +12,10 @@ ARCH= arm
 build: $(TARGET)
 
 $(TARGET): main.o ADXL345.o logging.o filter.o
-	$(CC) $(LDFLAGS) $^ -o $@ -lpthread -lrt
+	$(CC) $(LDFLAGS) $^ -o $@ -lpthread -lrt -lm
 
 %.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@ -lpthread -lrt
+	$(CC) $(CFLAGS) -c $< -o $@ -lpthread -lrt -lm
 
 .PHONY: clean
 
